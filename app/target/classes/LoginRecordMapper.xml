@@ -1,0 +1,15 @@
+<mapper namespace="com.sweech.repository.LoginRecordRepository">
+    <insert id="saveLoginRecord">
+        INSERT INTO login_records (user_id, login_time, ip_address)
+        VALUES (#{userId}, NOW(), #{ipAddress})
+    </insert>
+
+    <select id="findLoginRecordsByUserId" resultType="com.sweech.model.LoginRecord">
+        SELECT lr.user_id, u.username, lr.login_time, lr.ip_address
+        FROM login_records lr
+        LEFT JOIN member u ON lr.user_id = u.id
+        WHERE lr.user_id = #{userId}
+        ORDER BY lr.login_time DESC
+        LIMIT 30
+    </select>
+</mapper>

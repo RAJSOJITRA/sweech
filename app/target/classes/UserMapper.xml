@@ -1,0 +1,20 @@
+<mapper namespace="com.sweech.repository.UserRepository">
+    <select id="existsById" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM member WHERE id = #{id}
+    </select>
+    <insert id="save">
+        INSERT INTO member (id, password, username, registration_time)
+        VALUES (#{id}, #{password}, #{username}, #{registrationTime})
+    </insert>
+    <select id="findById" resultType="com.sweech.model.User">
+        SELECT * FROM member WHERE id = #{id}
+    </select>
+    <update id="update">
+        UPDATE member
+        <set>
+            <if test="password != null">password = #{password},</if>
+            <if test="username != null">username = #{username}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

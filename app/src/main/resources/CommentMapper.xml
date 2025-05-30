@@ -1,0 +1,24 @@
+<mapper namespace="com.sweech.repository.CommentRepository">
+    <insert id="save">
+        INSERT INTO comments (content, post_id, user_id, created_at)
+        VALUES (#{content}, #{postId}, #{userId}, #{createdAt})
+    </insert>
+
+    <select id="findComments" resultType="com.sweech.model.Comment">
+        SELECT c.id, c.content, u.username, c.created_at
+        FROM comments c
+        JOIN member u ON c.user_id = u.id
+        WHERE c.post_id = #{postId}
+        AND (#{cursor} IS NULL OR c.id &lt; #{cursor})
+        ORDER BY c.created_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="findById" resultType="com.sweech.model.Comment">
+        SELECT * FROM comments WHERE id = #{id}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM comments WHERE id = #{id}
+    </delete>
+</mapper>
